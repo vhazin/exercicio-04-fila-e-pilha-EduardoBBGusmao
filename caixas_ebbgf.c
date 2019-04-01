@@ -1,101 +1,66 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct PILHAS {
-	int caixa;
-	struct PILHAS* prox;
-} pilhas;
 
-typedef struct numP
-{
-	pilhas* pil;
-	struct numP* next;
-}Np;
+
 
 int main(){
-	Np* p = (Np*)malloc(sizeof(Np));
-	int Npilha, Ncaixas;
+	int Nc, Np;
+	int *caixas;
+	int xi, yi;
+	while(1){
+		scanf("%d", &Nc);
+		scanf("%d", &Np);
+		caixas = calloc(Np,  sizeof(int));
 
-	while(Ncaixas != 0 || Npilha != 0){
-		scanf("%d %d", &Ncaixas, &Npilha);
 
-		for (int i = 0; i < Npilha; ++i){
+		if(Np == 0 && Nc == 0)
+			return 0;
+
+		for (int i = 0; i < Np; i++ ){
 			int input;
-			scanf("%d", &input);
-			Np* ptemp = (Np*)malloc(sizeof(Np));
-			pilhas* temp = (pilhas*)malloc(sizeof(pilhas));
-			for (int j = 0; j < input; ++j){
-				int val;
-				scanf("%d", &val);
-					if(j ==0){
-						temp -> prox = NULL;
-						temp -> caixa = val;
+			scanf("%d", &caixas[i]);
+			caixas[i]--;
+			for (int j = 0; j <= caixas[i]; ++j){
+				
+				scanf("%d", &input);
+				
 
-					} else{
-						
-						pilhas* atual = (pilhas*)malloc(sizeof(pilhas));
-						atual -> caixa =  val;
-						atual -> prox =  NULL;
-
-						while(temp -> prox != NULL){
-							temp = temp -> prox;
-						};
-						printf("while -> caixa: %d\n", val);
-						temp -> prox = atual;
-						printf("temp -> caixa: %d\n", atual -> caixa);
-
-					}
-
-
+				if (input == 1){
+					xi = i;
+					yi = j;
 				}
 
-			if (i==0) {
-				p -> next =  NULL;
-				p -> pil = temp;
-				printf("pil -> : %d\n", p-> pil -> caixa);
-
-			} else {
-				Np* ant = (Np*)malloc(sizeof(Np));
-				ant = p;
-				ptemp -> next = NULL;
-				ptemp -> pil = temp;
-				while(ant -> next != NULL){
-					ant = ant -> next;
-				};
-				ant -> next = ptemp;
-				printf("pil -> : %d\n", ant -> next-> pil -> caixa);
-
-
+			}			
+		}
+		int numE = 0, numD = 0, j=Np-1;
+		for (int i = 0; i < Np; ++i){
+			if(i<xi){
+				if ((xi-1) < 0 ||caixas[i]<yi)
+				{
+					numE = 0;
+				}
+				if ( caixas[i] >= yi){
+					numE = numE + (caixas[i]- (yi-1));
+				}
+			}
+			if(j > xi){	
+				if (xi+1 >= Np || caixas[j] < yi) {
+					numD = 0;
+				} 
+				if ( caixas[j] >= yi){
+					numD = numD + (caixas[j]- (yi-1));
+				}
 			}
 
-
+			j--;
+				
 		}
 
-		for (int i = 0; i < Npilha; ++i)
-		{	
-			printf("%d ", i);
-			pilhas* temp = (pilhas*)malloc(sizeof(pilhas));
-			temp = p->pil;
-			printf("%d ", temp->caixa);
-			while(temp -> prox !=NULL){
-				temp = temp->prox;
-				printf("%d ", temp->caixa);
-			};
-			printf("\n");
-			p = p->next;  
-		}
-
-		for (int i = 0; i < Npilha; ++i)
+		if (numD > numE)
 		{
-			
+			numD = numE;
 		}
-	}		
+		printf("%d\n", numD+ (caixas[xi]-yi));
+
+	};
 }
-
-/*
-4 3
-1 3
-2 1 2
-1 4
-*/
-
-
